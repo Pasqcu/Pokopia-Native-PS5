@@ -1,0 +1,28 @@
+# --- Game data: NEVER commit (copyright of Nintendo / The Pokémon Company / Koei Tecmo) ---
+# the user's dump (NSO modules, NPDM, RomFS) and anything derived from it
+Pokemon Pokopia*/
+*.nso
+*.npdm
+*.nsp
+*.xci
+*.nca
+*.nup
+exefs/
+romfs/
+# C++ generated from the game's code, analysis output, caches, objects, the title folder (holds the user's exefs)
+build/
+dist/
+*.o
+*.elf
+eboot.bin
+*.prx
+
+# --- Third-party components: fetched at pinned versions by scripts/fetch_upstream.sh ---
+third_party/
+
+# --- Local tooling ---
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+compile_commands.json
