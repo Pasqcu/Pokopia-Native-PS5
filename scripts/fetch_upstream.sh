@@ -10,7 +10,9 @@ TP="$ROOT/third_party"
 DL="$ROOT/build/downloads"
 mkdir -p "$TP" "$DL"
 
-PKP_URL=https://github.com/drakolordx7/pokopia-recomp.git
+# pokopia-recomp is drakolordx7's; its repository is no longer online (2026-11). featureJosh's fork keeps the pinned commit
+# (same tree, checked), so it is fetched from there.
+PKP_URL=https://github.com/featureJosh/pokopia-recomp.git
 PKP_REV=2c29515b23a6d78d967775fd7e9f24f50402cca7
 BP_URL=https://github.com/mpereiraesaa/ps5-native-app-boilerplate.git
 BP_REV=38c9175869f101c8ab7f2c14195c69c5e581e905
@@ -28,7 +30,9 @@ sha256() { if command -v shasum >/dev/null; then shasum -a 256 "$1" | cut -d' ' 
 
 clone_pinned() {   # url rev dir
     if [[ ! -d "$3/.git" ]]; then git clone --quiet "$1" "$3"; fi
-    git -C "$3" fetch --quiet origin "$2" 2>/dev/null || git -C "$3" fetch --quiet origin
+    git -C "$3" remote set-url origin "$1"
+    # a pinned commit already here needs no download (and does not fail when its remote is gone)
+    git -C "$3" cat-file -e "$2^{commit}" 2>/dev/null || git -C "$3" fetch --quiet origin "$2" 2>/dev/null || git -C "$3" fetch --quiet origin
     git -C "$3" checkout --quiet "$2"
     echo "$(basename "$3") at $(git -C "$3" rev-parse --short HEAD)"
 }

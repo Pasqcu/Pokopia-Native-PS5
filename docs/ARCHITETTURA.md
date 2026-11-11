@@ -26,7 +26,7 @@ per i core Zen 2 della PS5, impacchettato come titolo homebrew (cartella `PPSAxx
 
 | Ruolo | Progetto di riferimento | Come è usato |
 |---|---|---|
-| Lifter AArch64 → C++ | [pokopia-recomp](https://github.com/drakolordx7/pokopia-recomp) (nxrecomp) | scaricato a commit fisso, usato così com'è: copertura 100% verificata sul build `816C5358…` del dump |
+| Lifter AArch64 → C++ | pokopia-recomp di drakolordx7 (nxrecomp; il repository originale non è più online, il commit fisso viene dal fork [featureJosh/pokopia-recomp](https://github.com/featureJosh/pokopia-recomp)) | scaricato a commit fisso, usato così com'è: copertura 100% verificata sul build `816C5358…` del dump |
 | Pattern di static recompilation (dispatch, jump table, cache) | [peiikai/LASRecomp](https://github.com/peiikai/LASRecomp) | design del dispatch con cache diretta, tabelle SoA ordinate |
 | HLE di Horizon (kernel, servizi IPC, NVN) | [seedds/nxnative](https://github.com/seedds/nxnative), nxrt di pokopia-recomp | riferimento per il port HLE (fase successiva, vedi ROADMAP) |
 | Titolo PS5 (CRT, VideoOut, convertitore ELF→PS5, FSELF, libc.prx) | [ps5-native-app-boilerplate](https://github.com/mpereiraesaa/ps5-native-app-boilerplate) | scaricato a commit fisso; validato dagli autori su firmware 6.02 e 12.70 |

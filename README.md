@@ -1,3 +1,5 @@
+**Italiano** · [English](README.en.md)
+
 # Pokopia Native on PS5
 
 Ricompilazione statica di **Pokémon Pokopia** (Nintendo Switch 2) in codice x86-64 nativo per i core **AMD Zen 2**
@@ -10,11 +12,6 @@ AArch64 del gioco diventa C++ e poi istruzioni x86-64 compilate con `-march=znve
 > del gioco ricompilato, i moduli, la RomFS e gli shader tradotti restano sul tuo computer (`build/`, `dist/` e la
 > cartella del dump sono esclusi da git). Progetto amatoriale, non affiliato a Nintendo, The Pokémon Company,
 > Koei Tecmo o Sony.
-
-**English summary.** Static recompilation of Pokémon Pokopia (Switch 2) to a native PS5 homebrew title. Playable on a
-jailbroken **PS5** (standard model; PS5 Pro not tested yet). No game files are distributed: you build the title folder
-from your own dump, which must be **extracted into folders** (`exefs/`, `romfs/`); NSP, XCI, NSZ, NCA, NUP and other
-packages are not supported. Build and install steps below (in Italian).
 
 ## Stato
 
@@ -76,26 +73,20 @@ La cartella del dump è esclusa da git: niente di essa finisce nel repository.
 
 ## Compilare
 
-**PC**: macOS (testato, Intel) o Linux x86-64, con git, curl, unzip, CMake ≥ 3.25, Ninja, clang ≥ 18 (Xcode va bene),
-Python ≥ 3.10, ~16 GB di RAM e qualche decina di GB liberi (codice generato, cache degli shader, RomFS). Gli script
-scaricano a versioni fisse i componenti di terze parti (pokopia-recomp, ps5-native-app-boilerplate, ps5-payload-sdk,
-PS5_Vulkan e Mesa, Zig, .NET per il traduttore degli shader).
+**Guida completa passo passo**, con requisiti, tempi, comandi e problemi comuni:
+**[docs/GUIDA_COMPILAZIONE.md](docs/GUIDA_COMPILAZIONE.md)**.
+
+In breve: un Mac Intel (provato; Linux x86-64 e Mac Apple Silicon non provati), circa 60 GB liberi, 16 GB di RAM,
+git, curl, unzip, CMake ≥ 3.25, Ninja, clang (quello di Xcode va bene) e Python ≥ 3.10. Con il dump al suo posto:
 
 ```bash
-scripts/setup_host.sh                  # venv Python, componenti a versione fissa, SDK PS5, linker
-scripts/build_host_llvm.sh             # una volta: LLVM per gli strumenti di build di Mesa
-scripts/build_radv_ps5.sh              # driver Vulkan della PS5 (RADV di PS5_Vulkan) e SDK con libps5platform
-scripts/lift.sh                        # i 4 moduli del tuo dump: AArch64 -> C++ (build/lift/)
-scripts/setup_shader_tools.sh          # traduttore degli shader (Ryujinx/Ryubing)
-scripts/build_shader_cache.sh          # shader del tuo dump -> SPIR-V (~2 ore, riprendibile)
-python3 scripts/pack_shader_cache.py   # build/shader_cache/spirv.pack (un file solo per la PS5)
-
-cmake -S . -B build/ps5-gfx -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=cmake/toolchains/ps5.cmake \
-      -DPKP_MODULES="rtld;subsdk0;sdk;main" -DPKP_TITLE_STAGE=boot -DPKP_NXRT_GFX=ON \
-      -DPS5_PAYLOAD_SDK="$HOME/.cache/pokopia-native/ps5gfx/PS5_Vulkan/.deps/native/ps5-payload-sdk"
-ninja -C build/ps5-gfx -j8             # il gioco intero: ~770 MB di C++, circa 12 minuti su un i9 a 8 core
-scripts/make_ppsa.sh --build build/ps5-gfx   # dist/PPSA97656/: eboot.bin e i moduli del tuo dump in game/exefs
+scripts/build_all.sh       # componenti, driver Vulkan della PS5, lift, shader, titolo -> dist/PPSA97656/
 ```
+
+Lo script esegue i passi in ordine e salta quelli già fatti: se si interrompe, rilancialo. La prima volta richiede
+diverse ore (LLVM 1-2 ore, cache degli shader circa 2 ore), le successive pochi minuti. Gli script scaricano a versioni
+fisse i componenti di terze parti (pokopia-recomp, ps5-native-app-boilerplate, ps5-payload-sdk, PS5_Vulkan e Mesa, Zig,
+.NET per il traduttore degli shader).
 
 ## Installare sulla PS5
 
@@ -189,6 +180,7 @@ copia dei sorgenti (`runtime/nxrt_port/CMakeLists.txt`, `runtime/nxrt_port/gfx.c
 
 ## Documentazione
 
+- [Guida alla compilazione, da zero](docs/GUIDA_COMPILAZIONE.md)
 - [Architettura e ottimizzazioni Zen 2](docs/ARCHITETTURA.md)
 - [Analisi del gioco](docs/ANALISI.md)
 - [Roadmap](docs/ROADMAP.md)
@@ -199,7 +191,8 @@ copia dei sorgenti (`runtime/nxrt_port/CMakeLists.txt`, `runtime/nxrt_port/gfx.c
 
 Codice di questo repository: **GPL-3.0-or-later** ([LICENSE](LICENSE)), perché si collega a componenti GPL-3.0.
 Componenti scaricati (non inclusi), ciascuno con la sua licenza:
-[pokopia-recomp / nxrecomp](https://github.com/drakolordx7/pokopia-recomp) (GPL-3.0),
+pokopia-recomp / nxrecomp di drakolordx7 (GPL-3.0; il repository originale non è più online: gli script scaricano il
+commit fisso dal fork [featureJosh/pokopia-recomp](https://github.com/featureJosh/pokopia-recomp)),
 [ps5-native-app-boilerplate](https://github.com/mpereiraesaa/ps5-native-app-boilerplate) (GPL-3.0),
 [ps5-payload-sdk](https://github.com/ps5-payload-dev/sdk) (GPL-3.0),
 [PS5_Vulkan](https://github.com/mihawk-99/PS5_Vulkan) (GPL-3.0) con Mesa RADV (MIT), [SDL3](https://libsdl.org) (zlib),
